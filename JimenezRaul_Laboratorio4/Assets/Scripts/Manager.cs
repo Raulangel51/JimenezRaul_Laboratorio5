@@ -43,7 +43,7 @@ public class Manager : MonoBehaviour
             if(audioManager)
                 audioManager.PlayShoot();
 
-            if (Physics.Raycast(myRay, out hitInfo))
+            if (Physics.Raycast(myRay, out hitInfo) /*&& !isPaused*/)
             {
                 if (hitInfo.collider.CompareTag("Ball") || hitInfo.collider.CompareTag("Box"))
                 {
