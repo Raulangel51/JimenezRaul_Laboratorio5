@@ -14,6 +14,7 @@ public class Manager : MonoBehaviour
     private GameObject op;
     private float targets = 0;
     public Text TargetsDestroyed;
+    public AudioManager audioManager;
 
     // Start is called before the first frame update
     void Start()
@@ -39,8 +40,10 @@ public class Manager : MonoBehaviour
         {
             Ray myRay = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hitInfo;
+            if(audioManager)
+                audioManager.PlayShoot();
 
-            if(Physics.Raycast(myRay, out hitInfo))
+            if (Physics.Raycast(myRay, out hitInfo))
             {
                 if (hitInfo.collider.CompareTag("Ball") || hitInfo.collider.CompareTag("Box"))
                 {
@@ -54,16 +57,20 @@ public class Manager : MonoBehaviour
                 else if (hitInfo.collider.CompareTag("Target"))
                 {
                     Destroy(hitInfo.collider.gameObject);
+                    if(audioManager)
+                        audioManager.PlayBoom();
                     targets++;
                     TargetsDestroyed.text = "Targets Destroyed: " + targets.ToString(); 
                 }
             }
-
-
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             TogglePause();
+        }
+        if(Input.GetButtonDown("Jump") && audioManager)
+        {
+            audioManager.PlayJump();
         }
     }
 
